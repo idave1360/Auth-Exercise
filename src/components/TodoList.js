@@ -198,7 +198,7 @@ const TodoList = () => {
           <li className="text-lg font-bold flex justify-between items-center">
             {userName}
             <Button
-              className="ml-2 p-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 active:translate-y-1 transform transition"
+              className="ml-2 p-1 text-xs bg-white-500 text-gray rounded hover:bg-gray-600 hover:text-white active:translate-y-1 transform transition"
               onClick={() => deleteAll(userName)}
             >
               {userName === data?.user?.name ? "Delete All" : "방해하기"}
