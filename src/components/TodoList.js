@@ -137,7 +137,7 @@ const TodoList = () => {
 
   const deleteAllTodos = async () => {
     // Firestore의 모든 할 일을 삭제합니다.
-    const q = query(todoCollection);
+    const q = query(todoCollection, where("userName", "==", data?.user?.name));
     const results = await getDocs(q);
     results.docs.forEach((todoDoc) => {
       const todoRef = doc(todoCollection, todoDoc.id);
