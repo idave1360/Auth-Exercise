@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import TodoItem from '@/components/TodoItem';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -31,15 +33,27 @@ const TodoList = () => {
   // 라벨 상태를 추가합니다.
   const [label, setLabel] = useState("분류되지 않음");
 
+  const router = useRouter();
+  const { data } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace("/login");
+    },
+  });
+
   useEffect(() => {
     getTodos();
-  } , []);
+  } , [data]);
 
   const getTodos = async () => {
     // Firestore 쿼리를 만듭니다.
-    const q = query(todoCollection);
+    // const q = query(todoCollection);
 
-    // Fires store 에서 할 일 목록을 조회합니다.
+    if (!data?.user?.name) return;
+
+    const q = query(todoCollection, where("userName", "==", data?.user?.name));
+
+    // Firestore 에서 할 일 목록을 조회합니다.
     const results = await getDocs(q);
     const newTodos = [];
 
@@ -77,6 +91,7 @@ const TodoList = () => {
 
     // Firesotre 에 추가한 일을 저장합니다.
     const docRef = await addDoc(todoCollection, {
+      userName: data?.user?.name,
       text: input,
       date: currentDate,
       completed: false,
