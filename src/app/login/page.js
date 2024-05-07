@@ -21,7 +21,7 @@ export default function Login() {
                     hover:bg-white hover:text-blue-500`}
             onClick={() => router.push("/")}
           >
-            Go to Home
+            Go to Application
           </button>
           <button
             className={`w-40
@@ -32,7 +32,7 @@ export default function Login() {
                     hover:bg-white hover:text-blue-500`}
             onClick={() => signOut()}
           >
-            Sign out
+            Sign Out
           </button>
         </div>
       ) : (
@@ -47,7 +47,7 @@ export default function Login() {
                     hover:bg-white hover:text-blue-500`}
             onClick={() => signIn()}
           >
-            Sign in
+            Sign In
           </button>
         </div>
       )}

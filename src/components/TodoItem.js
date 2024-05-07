@@ -6,7 +6,7 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
       <input
         type="checkbox"
         checked={todo.completed}
-        onChange={() => onToggle(todo.id)} // todo 객체 대신 todo.id를 전달
+        onChange={() => onToggle(todo.id)}
         className="form-checkbox h-5 w-5 text-blue-600"
       />
       <span
@@ -17,12 +17,9 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
       <span className="mr-2 text-blue-500">
         {todo.date}
       </span>
-      <span className="mr-2 text-green-500">
-        {todo.label || "분류되지 않음"}
-      </span>
       <button
         className="text-white p-1 rounded hover:bg-gray-200 active:translate-y-1 transform transition"
-        onClick={() => onDelete(todo.id)} // todo 객체 대신 todo.id를 전달
+        onClick={() => onDelete(todo.id)}
       >
         🗑️
       </button>
