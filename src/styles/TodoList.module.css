@@ -1,0 +1,18 @@
+/* TodoList.module.css에서 유지되어야 하는 스타일이 있다면, 예를 들어 특별한 애니메이션 등은 이곳에 남겨둡니다. */
+
+/* 예시: 버튼 클릭 애니메이션 */
+.buttonClickAnimation {
+  animation: clickEffect 0.3s ease;
+}
+
+@keyframes clickEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
