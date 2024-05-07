@@ -44,7 +44,7 @@ const TodoList = () => {
 
   useEffect(() => {
     getTodos();
-  } , [data]);
+  } , [data, showOthers]);
 
   const getTodos = async () => {
     // Firestore 쿼리를 만듭니다.
@@ -91,7 +91,11 @@ const TodoList = () => {
     });
 
     // id 값을 Firestore 에 저장한 값으로 지정합니다.
-    setTodos([...todos, { id: docRef.id, text: input, date: currentDate, completed: false }]);
+    const newTodo = { id: docRef.id, text: input, date: currentDate, completed: false };
+
+    // 새로운 할 일을 목록에 추가합니다.
+    setTodos([...todos, newTodo]);
+
     setInput("");
     setDate("");
 
@@ -184,36 +188,40 @@ const TodoList = () => {
         Sign Out
       </Button>
       <ul className="list-none p-0">
-      {Object.entries(
-        todos.reduce((groups, todo) => {
-          const group = todo.userName;
-          if (!groups[group]) {
-            groups[group] = [];
-          }
-          groups[group].push(todo);
-          return groups;
-        }, {})
-      ).sort(([userNameA], [userNameB]) => userNameA.localeCompare(userNameB)).map(([userName, todosInGroup]) => (
-      <React.Fragment key={userName}>
-          <li className="text-lg font-bold flex justify-between items-center">
-            {userName}
-            <Button
-              className="ml-2 p-1 text-xs bg-white-500 text-gray rounded hover:bg-gray-600 hover:text-white active:translate-y-1 transform transition"
-              onClick={() => deleteAll(userName)}
-            >
-              {userName === data?.user?.name ? "Delete All" : "방해하기"}
-            </Button>
-          </li>
-          {todosInGroup.sort((a, b) => new Date(a.date) - new Date(b.date)).map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={() => toggleTodo(todo.id)}
-              onDelete={() => deleteTodo(todo.id)}
-            />
-          ))}
-        </React.Fragment>
-      ))}
+        {Object.entries(
+          todos.reduce((groups, todo) => {
+            const group = todo.userName;
+            if (!groups[group]) {
+              groups[group] = [];
+            }
+            groups[group].push(todo);
+            return groups;
+          }, {})
+        ).sort(([userNameA], [userNameB]) => userNameA.localeCompare(userNameB)).map(([userName, todosInGroup]) => (
+          <React.Fragment key={userName}>
+            {showOthers || userName === data?.user?.name ? (
+              <>
+                <li className="text-lg font-bold flex justify-between items-center">
+                  {userName}
+                  <Button
+                    className="ml-2 p-1 text-xs bg-white-500 text-gray rounded hover:bg-gray-600 hover:text-white active:translate-y-1 transform transition"
+                    onClick={() => deleteAll(userName)}
+                  >
+                    {userName === data?.user?.name ? "Delete All" : "방해하기"}
+                  </Button>
+                </li>
+                {todosInGroup.sort((a, b) => new Date(a.date) - new Date(b.date)).map((todo) => (
+                  <TodoItem
+                    key={todo.id}
+                    todo={todo}
+                    onToggle={() => toggleTodo(todo.id)}
+                    onDelete={() => deleteTodo(todo.id)}
+                  />
+                ))}
+              </>
+            ) : null}
+          </React.Fragment>
+        ))}
       </ul>
         {todos.length === 0 && (
       <div className="text-center mt-5">
